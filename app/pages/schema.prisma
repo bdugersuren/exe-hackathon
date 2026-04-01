@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql" // Эсвэл туршилтаар "sqlite" ашиглаж болно
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  role      String   // "teacher", "student", "admin"
+  schoolId  String?
+  school    School?  @relation(fields: [schoolId], references: [id])
+  classes   Class[]  @relation("ClassTeacher")
+  lessons   Lesson[] @relation("LessonCreator")
+  progress  StudentProgress[]
+  aiChats   AiChat[]
+  createdAt DateTime @default(now())
+}
+
+model School {
+  id       String @id @default(uuid())
+  name     String
+  location String
+  users    User[]
+}
+
+model Class {
+  id        String @id @default(uuid())
+  name      String
+  grade     String
+  teacherId String
+  teacher   User   @relation("ClassTeacher", fields: [teacherId], references: [id])
+}
+
+model Lesson {
+  id                  String   @id @default(uuid())
+  title               String
+  subject             String
+  uploadedMaterialUrl String?
+  generatedContent    Json     // Slides, summary, adaptive rules зэрэг AI үүсгэсэн дата
+  difficultyLevel     String   @default("medium")
+  createdById         String
+  createdBy           User     @relation("LessonCreator", fields: [createdById], references: [id])
+  quizzes             Quiz[]
+  progress            StudentProgress[]
+  aiChats             AiChat[]
+  createdAt           DateTime @default(now())
+}
+
+model Quiz {
+  id           String @id @default(uuid())
+  lessonId     String
+  lesson       Lesson @relation(fields: [lessonId], references: [id])
+  questions    Json   // Асуулт хариултуудын жагсаалт
+  scoringRule  String?
+}
+
+model StudentProgress {
+  id             String @id @default(uuid())
+  studentId      String
+  student        User   @relation(fields: [studentId], references: [id])
+  lessonId       String
+  lesson         Lesson @relation(fields: [lessonId], references: [id])
+  completionRate Float  @default(0)
+  score          Float  @default(0)
+  weakTopics     Json?  // Алдсан сэдвүүд
+  updatedAt      DateTime @updatedAt
+}
+
+model AiChat {
+  id        String @id @default(uuid())
+  studentId String
+  student   User   @relation(fields: [studentId], references: [id])
+  lessonId  String
+  lesson    Lesson @relation(fields: [lessonId], references: [id])
+  messages  Json   // Чат түүх
+  createdAt DateTime @default(now())
+}

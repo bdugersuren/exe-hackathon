@@ -1,308 +1,537 @@
-import Image from "next/image";
+const navItems = [
+  { label: "Нүүр", href: "#home" },
+  { label: "Асуудал", href: "#problem" },
+  { label: "Шийдэл", href: "#solution" },
+  { label: "Онцлог", href: "#features" },
+  { label: "Workflow", href: "#workflow" },
+  { label: "Demo", href: "#demo" },
+  { label: "Нөлөө", href: "#impact" },
+  { label: "Ирээдүй", href: "#future" },
+];
+
+const problems = [
+  "Багш нарын хичээл бэлтгэх, шалгах ачаалал өндөр",
+  "Сурагч бүрийн сурах хурд, ойлголтын түвшин харилцан адилгүй",
+  "Материал ихэвчлэн статик (PDF, ном, нэг хэвийн контент)",
+  "Ойлгохгүй хоцорсон үед шууд тусламж авах боломж бага",
+  "Ахиц дэвшлийг өгөгдлөөр хянах боломж хязгаарлагдмал",
+];
+
+const solutionValue = [
+  {
+    title: "AI Lesson Generator",
+    text: "PDF, Word, PPT, текст оруулмагц зорилго, ойлголт, слайд хэлбэрийн тайлбар, тест, summary үүсгэнэ.",
+  },
+  {
+    title: "Adaptive Learning",
+    text: "Сурагчийн хариулт, хурд, алдааны хэв маягт тулгуурлан дараагийн даалгаврыг тохируулна.",
+  },
+  {
+    title: "AI Tutor Chat",
+    text: "“Дахин тайлбарла”, “7-р ангид ойлгомжтой болго”, “жишээ өг” гэх мэт хүсэлтэд 24/7 хариулна.",
+  },
+  {
+    title: "Learning Analytics",
+    text: "Аль сэдвүүд дээр хоцрогдол үүсэж буйг багш, сургуулийн түвшинд илрүүлж зөвлөмж өгнө.",
+  },
+];
+
+const features = [
+  {
+    title: "Smart Assessment",
+    text: "Олон сонголттой, нөхөх, богино тайлбар асуултыг difficulty-ээр тохируулан үүсгэнэ.",
+  },
+  {
+    title: "Multilingual Support",
+    text: "Монгол хэл дээр бүрэн ажиллаж, англи эх сурвалжийг монголоор тайлбарлана.",
+  },
+  {
+    title: "Low-bandwidth Mode",
+    text: "Хөнгөн UI + офлайн кэштэй горимоор тогтворгүй сүлжээнд ажиллана.",
+  },
+  {
+    title: "Inclusive Access",
+    text: "Text-to-speech, mobile friendly, харааны уншихад ээлтэй дизайн.",
+  },
+];
+
+const workflow = [
+  "Багш материал оруулна",
+  "AI хичээл, тест, тайлбар үүсгэнэ",
+  "Сурагч интерактив хичээл үзнэ",
+  "Систем хариуг үнэлж дасан зохицоно",
+  "Analytics тайлан багшид илгээнэ",
+];
+
+const modules = [
+  {
+    title: "Багшийн модуль",
+    items: ["Материал upload", "AI generate", "Ангидаа түгээх", "Тайлан харах"],
+  },
+  {
+    title: "Сурагчийн модуль",
+    items: ["Хичээл үзэх", "AI tutor-тай чат", "Тест өгөх", "Ахиц харах"],
+  },
+  {
+    title: "Админ / Сургуулийн модуль",
+    items: ["Хэрэглэгч удирдах", "Хичээлийн хэрэглээний тайлан", "Risk student жагсаалт"],
+  },
+  {
+    title: "AI Engine",
+    items: ["Content parser", "Lesson generator", "Adaptive recommender", "Analytics engine"],
+  },
+];
+
+const advantages = [
+  "Багшийн цагийг 60–80% хэмнэнэ",
+  "Сурагчийн ойлголтыг бодитоор сайжруулна",
+  "Хоцрогдлыг эрт илрүүлнэ",
+  "Монгол хэл дээр бүрэн ажиллах боломжтой",
+  "Low-internet орчинд ашиглах боломжтой",
+];
+
+const innovations = [
+  "Статик материалыг интерактив болгоно",
+  "Нэг хичээл → олон түвшний хувилбар",
+  "AI + Education + Personalization нэгтгэсэн",
+  "Дасан зохицох сургалтын үндсэн логиктой",
+];
+
+const impacts = [
+  { value: "↑ Суралцах үр дүн", label: "Дата-д суурилсан ахиц" },
+  { value: "↓ Багшийн ачаалал", label: "Автоматжуулсан материал" },
+  { value: "↔ Тэгш боломж", label: "Сурагч бүрт тохирсон замнал" },
+  { value: "K12 өргөн хэрэглээ", label: "Бүх ЕБС-д тэлэх боломж" },
+];
+
+const futureWork = [
+  "Speech recognition ба ярианы хичээл",
+  "Mobile app + офлайн AI хувилбар",
+  "Бодит сургуулиудад туршилт",
+  "Хөтөлбөрийн стандарттай нийцүүлэх",
+];
+
+const mvpFeatures = [
+  "Материал upload хийх",
+  "AI lesson summary үүсгэх",
+  "AI quiz үүсгэх",
+  "Student learning page",
+  "Basic analytics dashboard",
+];
+
+const techStack = [
+  "Next.js + React + Tailwind",
+  "Node.js (Nest/Express) эсвэл FastAPI",
+  "PostgreSQL + Redis + pgvector",
+  "LLM API + OCR + Document parser",
+];
+
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div>
-  <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-700/30 rounded-full mix-blend-screen filter blur-[120px] pointer-events-none" />
-  <div className="absolute top-[20%] right-[-10%] w-[600px] h-[600px] bg-blue-700/20 rounded-full mix-blend-screen filter blur-[120px] pointer-events-none" />
-  <div className="absolute bottom-[-10%] left-[20%] w-[400px] h-[400px] bg-indigo-600/20 rounded-full mix-blend-screen filter blur-[100px] pointer-events-none" />
-  {/* Navbar */}
-  <nav className="fixed w-full z-50 top-0 transition-all duration-300 pt-4 px-6">
-    <div className="max-w-7xl mx-auto">
-      <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl px-6 py-4 flex justify-between items-center shadow-lg">
-        {/* Logo */}
-        <a href="#" className="text-2xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 hover:opacity-80 transition-opacity">
-          EduGen AI
-        </a>
-        {/* Desktop Links */}
-        <div className="hidden md:flex space-x-8 text-gray-300 font-medium text-sm">
-          <a href="./index.html" className="hover:text-white transition-colors duration-200">Нүүр</a>
-          <a href="./Opportunities.html" className="hover:text-white transition-colors duration-200">Боломжууд</a>
-          <a href="#" className="hover:text-white transition-colors duration-200">Үнэ</a>
-          <a href="#" className="hover:text-white transition-colors duration-200">Бидний тухай</a>
-        </div>
-        {/* Login Button */}
-        <a href="#" className="hidden md:inline-flex items-center justify-center px-6 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-md transition-all duration-300 text-sm font-semibold text-white shadow-[0_0_15px_rgba(255,255,255,0.05)] hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]">
-          Нэвтрэх
-        </a>
-        {/* Mobile Menu Button */}
-        <button className="md:hidden text-gray-300 hover:text-white focus:outline-none">
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
-      </div>
-    </div>
-  </nav>
-  {/* Hero Section */}
-  <section className="relative z-10 min-h-screen flex items-center pt-32 pb-20">
-    <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-      {/* Left Column: Content */}
-      <div className="space-y-8">
-        <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-300 text-sm font-medium backdrop-blur-sm">
-          <span className="mr-2">✨</span> Шинэ үеийн боловсролын платформ
-        </div>
-        <h1 className="text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight text-white">
-          Боловсролын ирээдүйг <br />
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-500">
-            EduGen AI
-          </span>-тай хамт бүтээцгээе
-        </h1>
-        <p className="text-lg text-gray-400 leading-relaxed max-w-xl">
-          Хамгийн сүүлийн үеийн хиймэл оюун ухааны технологиор өөрийн суралцах үйл явцыг хурдасгаж, илүү ухаалгаар суралцаарай.
-        </p>
-        {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-5 pt-4">
-          <a href="#" className="px-8 py-4 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-semibold text-center transition-all duration-300 shadow-[0_0_20px_rgba(79,70,229,0.4)] hover:shadow-[0_0_30px_rgba(79,70,229,0.6)] transform hover:-translate-y-0.5">
-            Үнэгүй турших
-          </a>
-          <a href="#" className="px-8 py-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 backdrop-blur-md text-white font-semibold text-center transition-all duration-300 flex items-center justify-center gap-2 transform hover:-translate-y-0.5 group">
-            <span>Дэлгэрэнгүй</span>
-            <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </a>
-        </div>
-        {/* Trust metrics */}
-        <div className="pt-10 border-t border-white/10 flex items-center gap-6 mt-8">
-          <div className="flex -space-x-3">
-            <img className="w-10 h-10 rounded-full border-2 border-slate-950 object-cover" src="https://i.pravatar.cc/100?img=11" alt="Хэрэглэгч" />
-            <img className="w-10 h-10 rounded-full border-2 border-slate-950 object-cover" src="https://i.pravatar.cc/100?img=12" alt="Хэрэглэгч" />
-            <img className="w-10 h-10 rounded-full border-2 border-slate-950 object-cover" src="https://i.pravatar.cc/100?img=13" alt="Хэрэглэгч" />
-            <div className="w-10 h-10 rounded-full border-2 border-slate-950 bg-gray-800 flex items-center justify-center text-xs font-bold text-white z-10">+2k</div>
-          </div>
-          <p className="text-sm text-gray-400 leading-snug">
-            Идэвхтэй суралцагчдын <br /><span className="text-white font-semibold">сэтгэл ханамж 4.9/5</span>
-          </p>
-        </div>
-      </div>
-      {/* Right Column: Dashboard Image (Glassmorphism Frame) */}
-      <div className="relative w-full group">
-        {/* Glow behind image */}
-        <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl blur-xl opacity-30 group-hover:opacity-50 transition duration-1000" />
-        {/* Window Frame */}
-        <div className="relative bg-white/5 border border-white/10 backdrop-blur-2xl rounded-2xl p-2 shadow-2xl overflow-hidden">
-          {/* Window Controls */}
-          <div className="flex gap-2 px-3 pt-2 pb-3">
-            <div className="w-3 h-3 rounded-full bg-slate-600/50" />
-            <div className="w-3 h-3 rounded-full bg-slate-600/50" />
-            <div className="w-3 h-3 rounded-full bg-slate-600/50" />
-          </div>
-          {/* Image */}
-          <img src="images/Design_a_futuristic_202604011050 (1).png" alt="EduGen AI Dashboard" className="rounded-xl w-full h-auto object-cover border border-white/5" />
-        </div>
-      </div>
-    </div>
-  </section>
-  {/* How it Works Section */}
-  <section className="relative z-10 py-24 bg-slate-950/50 border-t border-white/5">
-    {/* Background Glow */}
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-purple-600/10 rounded-full mix-blend-screen filter blur-[150px] pointer-events-none" />
-    <div className="max-w-7xl mx-auto px-6 relative">
-      {/* Section Header */}
-      <div className="text-center max-w-2xl mx-auto mb-20 space-y-4">
-        <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">
-          Хэрхэн ажилладаг вэ?
-        </h2>
-        <p className="text-lg text-gray-400">
-          EduGen AI нь багшийн материалыг ухаалаг сургалтын туршлага болгон хувиргана
-        </p>
-      </div>
-      {/* Steps Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
-        {/* Connecting Line (Desktop only) */}
-        <div className="hidden md:block absolute top-[72px] left-[15%] right-[15%] h-[2px] bg-gradient-to-r from-blue-500/0 via-purple-500/40 to-indigo-500/0 z-0" />
-        {/* Step 1 */}
-        <div className="relative bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl p-8 hover:bg-white/10 transition-all duration-500 group z-10 hover:-translate-y-2 text-center">
-          <div className="absolute -inset-0.5 bg-gradient-to-b from-blue-500/30 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition duration-500 blur-md" />
-          <div className="relative">
-            {/* Icon */}
-            <div className="w-20 h-20 mx-auto rounded-2xl bg-gradient-to-br from-blue-500/20 to-blue-600/5 border border-blue-500/20 flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(59,130,246,0.15)] group-hover:shadow-[0_0_30px_rgba(59,130,246,0.4)] transition-all duration-300 group-hover:scale-110">
-              <svg className="w-10 h-10 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-bold text-white mb-3">Материал нэмэх</h3>
-            <p className="text-gray-400 leading-relaxed text-sm md:text-base">
-              Багш хичээлийн файл, тэмдэглэл, агуулгаа системд оруулна.
-            </p>
-          </div>
-        </div>
-        {/* Step 2 */}
-        <div className="relative bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl p-8 hover:bg-white/10 transition-all duration-500 group z-10 hover:-translate-y-2 text-center">
-          <div className="absolute -inset-0.5 bg-gradient-to-b from-purple-500/30 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition duration-500 blur-md" />
-          <div className="relative">
-            {/* Icon */}
-            <div className="w-20 h-20 mx-auto rounded-2xl bg-gradient-to-br from-purple-500/20 to-purple-600/5 border border-purple-500/20 flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(168,85,247,0.15)] group-hover:shadow-[0_0_30px_rgba(168,85,247,0.4)] transition-all duration-300 group-hover:scale-110">
-              <svg className="w-10 h-10 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-bold text-white mb-3">AI хичээл үүсгэх</h3>
-            <p className="text-gray-400 leading-relaxed text-sm md:text-base">
-              Систем материал дээр үндэслэн интерактив хичээл, тест, дасгал үүсгэнэ.
-            </p>
-          </div>
-        </div>
-        {/* Step 3 */}
-        <div className="relative bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl p-8 hover:bg-white/10 transition-all duration-500 group z-10 hover:-translate-y-2 text-center">
-          <div className="absolute -inset-0.5 bg-gradient-to-b from-indigo-500/30 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition duration-500 blur-md" />
-          <div className="relative">
-            {/* Icon */}
-            <div className="w-20 h-20 mx-auto rounded-2xl bg-gradient-to-br from-indigo-500/20 to-indigo-600/5 border border-indigo-500/20 flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(99,102,241,0.15)] group-hover:shadow-[0_0_30px_rgba(99,102,241,0.4)] transition-all duration-300 group-hover:scale-110">
-              <svg className="w-10 h-10 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 14l9-5-9-5-9 5 9 5z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 14v7" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-bold text-white mb-3">Сурагч суралцах</h3>
-            <p className="text-gray-400 leading-relaxed text-sm md:text-base">
-              Сурагч өөрийн түвшинд тохирсон агуулгаар суралцаж, AI туслахаас асууна.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  {/* Features Section */}
-  <section className="relative z-10 py-24 bg-slate-950 border-t border-white/5 overflow-hidden">
-    {/* Background Glow */}
-    <div className="absolute top-[30%] left-[-10%] w-[600px] h-[600px] bg-blue-600/10 rounded-full mix-blend-screen filter blur-[150px] pointer-events-none" />
-    <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-purple-600/10 rounded-full mix-blend-screen filter blur-[120px] pointer-events-none" />
-    <div className="max-w-7xl mx-auto px-6 relative">
-      {/* Section Header */}
-      <div className="text-center max-w-3xl mx-auto mb-20 space-y-4">
-        <h2 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight">
-          Гол онцлогууд
-        </h2>
-        <p className="text-lg text-gray-400">
-          Сургалтын үйл явцыг бүхэлд нь шинэ шатанд гаргах хүчирхэг боломжууд
-        </p>
-      </div>
-      {/* Features Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative">
-        {/* Feature 1 */}
-        <div className="relative bg-white/5 border border-white/10 backdrop-blur-xl rounded-[2rem] p-10 hover:bg-white/10 transition-all duration-500 group z-10 hover:-translate-y-1 overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-          <div className="relative">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500/20 to-blue-600/5 border border-blue-500/20 flex items-center justify-center mb-8 shadow-[0_0_20px_rgba(59,130,246,0.1)] group-hover:shadow-[0_0_30px_rgba(59,130,246,0.3)] transition-all duration-300 group-hover:scale-110">
-              <svg className="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-              </svg>
-            </div>
-            <h3 className="text-2xl font-bold text-white mb-4">AI хичээл үүсгэгч</h3>
-            <p className="text-gray-400 leading-relaxed text-lg">
-              Багшийн материалаас автоматаар интерактив хичээл, тест, даалгавар үүсгэнэ.
-            </p>
-          </div>
-        </div>
-        {/* Feature 2 */}
-        <div className="relative bg-white/5 border border-white/10 backdrop-blur-xl rounded-[2rem] p-10 hover:bg-white/10 transition-all duration-500 group z-10 hover:-translate-y-1 overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-          <div className="relative">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500/20 to-purple-600/5 border border-purple-500/20 flex items-center justify-center mb-8 shadow-[0_0_20px_rgba(168,85,247,0.1)] group-hover:shadow-[0_0_30px_rgba(168,85,247,0.3)] transition-all duration-300 group-hover:scale-110">
-              <svg className="w-8 h-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-              </svg>
-            </div>
-            <h3 className="text-2xl font-bold text-white mb-4">Дасан зохицох сургалт</h3>
-            <p className="text-gray-400 leading-relaxed text-lg">
-              Сурагчийн ахиц, ойлголтын түвшинд тохируулан агуулгыг өөрчилнө.
-            </p>
-          </div>
-        </div>
-        {/* Feature 3 */}
-        <div className="relative bg-white/5 border border-white/10 backdrop-blur-xl rounded-[2rem] p-10 hover:bg-white/10 transition-all duration-500 group z-10 hover:-translate-y-1 overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-indigo-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-          <div className="relative">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-indigo-600/5 border border-indigo-500/20 flex items-center justify-center mb-8 shadow-[0_0_20px_rgba(99,102,241,0.1)] group-hover:shadow-[0_0_30px_rgba(99,102,241,0.3)] transition-all duration-300 group-hover:scale-110">
-              <svg className="w-8 h-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-              </svg>
-            </div>
-            <h3 className="text-2xl font-bold text-white mb-4">AI туслах</h3>
-            <p className="text-gray-400 leading-relaxed text-lg">
-              Сурагч асуулт асууж, ойлгоогүй сэдвээ шууд тайлбарлуулна.
-            </p>
-          </div>
-        </div>
-        {/* Feature 4 */}
-        <div className="relative bg-white/5 border border-white/10 backdrop-blur-xl rounded-[2rem] p-10 hover:bg-white/10 transition-all duration-500 group z-10 hover:-translate-y-1 overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-400/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-          <div className="relative">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-400/20 to-blue-500/5 border border-blue-400/20 flex items-center justify-center mb-8 shadow-[0_0_20px_rgba(96,165,250,0.1)] group-hover:shadow-[0_0_30px_rgba(96,165,250,0.3)] transition-all duration-300 group-hover:scale-110">
-              <svg className="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
-              </svg>
-            </div>
-            <h3 className="text-2xl font-bold text-white mb-4">Шинжилгээ</h3>
-            <p className="text-gray-400 leading-relaxed text-lg">
-              Багш, сургуульд зориулсан ахиц, гүйцэтгэлийн дата тайлан гаргана.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  {/* CTA Section */}
-  <section className="relative z-10 py-32 bg-slate-950 border-t border-white/5 overflow-hidden">
-    {/* Background Glows */}
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-indigo-600/20 rounded-full mix-blend-screen filter blur-[120px] pointer-events-none" />
-    <div className="max-w-5xl mx-auto px-6 relative z-10 text-center">
-      {/* Glassmorphism Container */}
-      <div className="bg-white/5 border border-white/10 backdrop-blur-2xl rounded-[3rem] p-12 md:p-20 shadow-2xl relative overflow-hidden group">
-        {/* Inner Hover Glow */}
-        <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-indigo-500/10 blur-2xl transition duration-1000 group-hover:opacity-100 opacity-30" />
-        <div className="relative">
-          <h2 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-6">
-            Өнөөдөр эхлээрэй
-          </h2>
-          <p className="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed">
-            EduGen AI ашиглан хичээлийг илүү ухаалаг, интерактив, үр дүнтэй болго
-          </p>
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-5 justify-center items-center">
-            <a href="#" className="w-full sm:w-auto px-10 py-4 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-semibold text-center transition-all duration-300 shadow-[0_0_20px_rgba(79,70,229,0.4)] hover:shadow-[0_0_30px_rgba(79,70,229,0.6)] transform hover:-translate-y-0.5">
-              Эхлэх
-            </a>
-            <a href="#" className="w-full sm:w-auto px-10 py-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 backdrop-blur-md text-white font-semibold text-center transition-all duration-300 flex items-center justify-center gap-2 transform hover:-translate-y-0.5">
-              Сургууль бүртгүүлэх
-              <svg className="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  {/* Footer Section */}
-  <footer className="relative z-10 border-t border-white/5 bg-slate-950/80 backdrop-blur-xl pt-12 pb-8">
-    <div className="max-w-7xl mx-auto px-6">
-      {/* Top: Logo & Links */}
-      <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-        {/* Logo */}
-        <a href="#" className="text-2xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 hover:opacity-80 transition-opacity">
-          EduGen AI
-        </a>
-        {/* Links */}
-        <div className="flex flex-wrap justify-center gap-6 md:gap-8">
-          <a href="#" className="text-sm font-medium text-gray-400 hover:text-white transition-colors duration-200">Бидний тухай</a>
-          <a href="#" className="text-sm font-medium text-gray-400 hover:text-white transition-colors duration-200">Холбоо барих</a>
-          <a href="#" className="text-sm font-medium text-gray-400 hover:text-white transition-colors duration-200">Нууцлал</a>
-        </div>
-      </div>
-      {/* Bottom: Copyright */}
-      <div className="mt-12 pt-8 border-t border-white/5 text-center">
-        <p className="text-sm text-gray-500">
-          © 2026 EduGen AI. Бүх эрх хуулиар хамгаалагдсан.
-        </p>
-      </div>
-    </div>
-  </footer>
-</div>
+    <div id="home" className="relative isolate overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(63,210,199,0.14),_transparent_50%),radial-gradient(circle_at_20%_60%,_rgba(255,180,92,0.12),_transparent_45%),radial-gradient(circle_at_80%_20%,_rgba(255,107,107,0.12),_transparent_40%)]" />
+      <div className="absolute -top-32 right-[-10%] h-[420px] w-[420px] rounded-full bg-[#12363a] blur-[120px] opacity-60 animate-[drift_10s_ease-in-out_infinite]" />
+      <div className="absolute bottom-[-20%] left-[-10%] h-[520px] w-[520px] rounded-full bg-[#2a1e12] blur-[160px] opacity-60 animate-[drift_12s_ease-in-out_infinite]" />
 
+      <nav className="fixed top-0 z-50 w-full px-6 pt-5">
+        <div className="mx-auto flex max-w-7xl items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-6 py-4 backdrop-blur-xl shadow-lg">
+          <a href="#home" className="text-xl font-extrabold tracking-tight text-white">
+            EduGen AI
+          </a>
+          <div className="hidden items-center gap-6 text-sm font-medium text-slate-300 md:flex">
+            {navItems.map((item) => (
+              <a key={item.href} href={item.href} className="transition-colors hover:text-white">
+                {item.label}
+              </a>
+            ))}
+          </div>
+          <a
+            href="#contact"
+            className="hidden items-center justify-center rounded-xl border border-white/15 bg-white/10 px-5 py-2 text-sm font-semibold text-white transition hover:bg-white/15 md:inline-flex"
+          >
+            Холбоо барих
+          </a>
+        </div>
+      </nav>
+
+      <section className="relative z-10 px-6 pb-20 pt-32">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-16 lg:grid-cols-2">
+          <div className="space-y-8 animate-[rise_0.9s_ease-out]">
+            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-4 py-2 text-sm font-medium text-emerald-200">
+              AI-д суурилсан интерактив, adaptive learning платформ
+            </div>
+            <h1 className="text-4xl font-extrabold leading-tight text-white md:text-6xl">
+              Хичээлийг амьд болгож, сурагч бүрт
+              <span className="text-emerald-300"> өөр</span> замнал үүсгэнэ
+            </h1>
+            <p className="max-w-xl text-lg text-slate-300">
+              EduGen AI нь багшийн оруулсан материалыг интерактив хичээл,
+              тест, даалгавар, тайлбар болгон хувиргаж, сурагчийн хариулт дээр
+              үндэслэн дараагийн сургалтыг автоматаар тохируулна.
+            </p>
+            <div className="flex flex-col gap-4 sm:flex-row">
+              <Link
+                href="/teacher/dashboard"
+                className="rounded-xl bg-emerald-400 px-7 py-3 text-center text-sm font-semibold text-slate-900 transition hover:bg-emerald-300"
+              >
+                Багш (Demo)
+              </Link>
+              <Link
+                href="/student/dashboard"
+                className="rounded-xl bg-indigo-400 px-7 py-3 text-center text-sm font-semibold text-slate-900 transition hover:bg-indigo-300"
+              >
+                Сурагч (Demo)
+              </Link>
+              <Link
+                href="#solution"
+                className="rounded-xl border border-white/15 bg-white/5 px-7 py-3 text-center text-sm font-semibold text-white transition hover:bg-white/10"
+              >
+                Шийдлийг харах
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 gap-4 pt-6 text-sm text-slate-300 sm:grid-cols-4">
+              <div className="rounded-xl border border-white/10 bg-white/5 px-4 py-3">
+                <p className="text-lg font-semibold text-white">60–80%</p>
+                <p>Бэлтгэл хэмнэлт</p>
+              </div>
+              <div className="rounded-xl border border-white/10 bg-white/5 px-4 py-3">
+                <p className="text-lg font-semibold text-white">24/7</p>
+                <p>AI туслах</p>
+              </div>
+              <div className="rounded-xl border border-white/10 bg-white/5 px-4 py-3">
+                <p className="text-lg font-semibold text-white">K12</p>
+                <p>Бүх анги</p>
+              </div>
+              <div className="rounded-xl border border-white/10 bg-white/5 px-4 py-3">
+                <p className="text-lg font-semibold text-white">Монгол</p>
+                <p>Хэлний дэмжлэг</p>
+              </div>
+            </div>
+          </div>
+          <div className="relative animate-[rise_1.1s_ease-out]">
+            <div className="absolute -inset-4 rounded-[32px] bg-gradient-to-br from-emerald-400/30 via-transparent to-amber-300/20 blur-2xl" />
+            <div className="relative rounded-[28px] border border-white/10 bg-white/5 p-6 backdrop-blur-2xl shadow-2xl">
+              <div className="flex items-center gap-2 pb-5">
+                <span className="h-3 w-3 rounded-full bg-white/30" />
+                <span className="h-3 w-3 rounded-full bg-white/30" />
+                <span className="h-3 w-3 rounded-full bg-white/30" />
+              </div>
+              <div className="space-y-5">
+                <div className="rounded-2xl border border-white/10 bg-slate-950/70 p-5">
+                  <p className="text-sm font-semibold text-emerald-300">
+                    PDF → Интерактив хичээл
+                  </p>
+                  <p className="mt-2 text-sm text-slate-300">
+                    Оролтын материалыг AI анализлаад, зорилго, ойлголт, жишээ,
+                    inline асуултыг нэг дор гаргана.
+                  </p>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-slate-200">
+                    <p className="font-semibold">Adaptive next step</p>
+                    <p className="mt-2 text-xs text-slate-400">
+                      Буруу хариулбал тайлбар + хялбар контент
+                    </p>
+                  </div>
+                  <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-slate-200">
+                    <p className="font-semibold">AI tutor chat</p>
+                    <p className="mt-2 text-xs text-slate-400">
+                      “Өөрөөр тайлбарла” хүсэлт
+                    </p>
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-amber-300/30 bg-amber-300/10 p-4 text-xs text-amber-100">
+                  Нэг материал → олон түвшний хичээл → хувь хүнд тохирсон суралцах
+                  туршлага
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="problem" className="relative z-10 border-t border-white/5 bg-slate-950/40 px-6 py-20">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-12 max-w-2xl space-y-4">
+            <p className="text-sm uppercase tracking-[0.3em] text-emerald-300/80">Асуудал</p>
+            <h2 className="text-3xl font-bold text-white md:text-4xl">
+              Монголын ЕБС-ийн бодит нөхцөл
+            </h2>
+            <p className="text-slate-300">
+              Багш, сурагч, сургуулийн түвшинд хуримтлагдсан асуудлууд нь
+              сургалтын чанарт шууд нөлөөлж байна.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            {problems.map((item) => (
+              <div
+                key={item}
+                className="rounded-2xl border border-white/10 bg-white/5 px-6 py-4 text-slate-200"
+              >
+                {item}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="solution" className="relative z-10 px-6 py-20">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-12 max-w-3xl space-y-4">
+            <p className="text-sm uppercase tracking-[0.3em] text-amber-300/80">Шийдэл</p>
+            <h2 className="text-3xl font-bold text-white md:text-4xl">EduGen AI гэж юу вэ?</h2>
+            <p className="text-slate-300">
+              EduGen AI нь багшийн оруулсан материалыг AI-аар боловсруулж
+              интерактив хичээл, тест, даалгавар, тайлбар болгон хувиргана.
+              Сурагч бүрийн ахиц дээр үндэслэн дараагийн контентыг автомат
+              тохируулж өгнө.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {solutionValue.map((item) => (
+              <div
+                key={item.title}
+                className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-xl"
+              >
+                <h3 className="text-xl font-semibold text-white">{item.title}</h3>
+                <p className="mt-3 text-slate-300">{item.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="features" className="relative z-10 border-t border-white/5 bg-slate-950/60 px-6 py-20">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-12 max-w-2xl space-y-4">
+            <p className="text-sm uppercase tracking-[0.3em] text-emerald-300/80">Гол онцлог</p>
+            <h2 className="text-3xl font-bold text-white md:text-4xl">
+              Интерактив + Adaptive + Analytics
+            </h2>
+            <p className="text-slate-300">
+              Багшийн ажлыг хөнгөвчилж, сурагчийн ойлголтыг гүнзгийрүүлэхэд
+              чиглэсэн цогц боломжууд.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {features.map((item) => (
+              <div key={item.title} className="rounded-2xl border border-white/10 bg-white/5 p-6">
+                <h3 className="text-lg font-semibold text-white">{item.title}</h3>
+                <p className="mt-3 text-slate-300">{item.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="workflow" className="relative z-10 px-6 py-20">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-12 max-w-2xl space-y-4">
+            <p className="text-sm uppercase tracking-[0.3em] text-amber-300/80">Workflow</p>
+            <h2 className="text-3xl font-bold text-white md:text-4xl">
+              Input → AI → Adaptive → Analytics
+            </h2>
+            <p className="text-slate-300">Бүрэн автомат бөгөөд өөрөө сайжирдаг сургалтын цикл.</p>
+          </div>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
+            {workflow.map((step, index) => (
+              <div
+                key={step}
+                className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-slate-200"
+              >
+                <div className="text-xs text-amber-300/80">Алхам {index + 1}</div>
+                <div className="mt-2 font-medium">{step}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="relative z-10 border-t border-white/5 bg-slate-950/60 px-6 py-20">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-12 max-w-2xl space-y-4">
+            <p className="text-sm uppercase tracking-[0.3em] text-emerald-300/80">Модуль бүтэц</p>
+            <h2 className="text-3xl font-bold text-white md:text-4xl">Системийн үндсэн модуль</h2>
+            <p className="text-slate-300">Багш, сурагч, админ, AI engine гэсэн 4 үндсэн багц.</p>
+          </div>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {modules.map((module) => (
+              <div key={module.title} className="rounded-2xl border border-white/10 bg-white/5 p-6">
+                <h3 className="text-lg font-semibold text-white">{module.title}</h3>
+                <div className="mt-4 grid grid-cols-1 gap-2 text-sm text-slate-300 sm:grid-cols-2">
+                  {module.items.map((item) => (
+                    <div key={item} className="rounded-xl border border-white/5 bg-slate-900/40 px-3 py-2">
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="demo" className="relative z-10 px-6 py-20">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-12 max-w-2xl space-y-4">
+            <p className="text-sm uppercase tracking-[0.3em] text-amber-300/80">Demo / Screenshot</p>
+            <h2 className="text-3xl font-bold text-white md:text-4xl">Нэг платформ, олон дүр зураг</h2>
+            <p className="text-slate-300">Хичээл үүсгэх, суралцах, тайлан гаргах хэсгүүдийн гол харц.</p>
+          </div>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {["PDF upload & AI parse", "Generated lesson preview", "Student interaction", "Analytics dashboard"].map(
+              (label) => (
+                <div key={label} className="rounded-3xl border border-white/10 bg-white/5 p-6">
+                  <div className="h-40 rounded-2xl border border-dashed border-white/15 bg-slate-900/60" />
+                  <p className="mt-4 text-sm text-slate-300">{label}</p>
+                </div>
+              )
+            )}
+          </div>
+        </div>
+      </section>
+
+      <section className="relative z-10 border-t border-white/5 bg-slate-950/60 px-6 py-20">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 lg:grid-cols-2">
+          <div className="space-y-4">
+            <p className="text-sm uppercase tracking-[0.3em] text-emerald-300/80">Давуу тал</p>
+            <h2 className="text-3xl font-bold text-white md:text-4xl">Яагаад EduGen AI вэ?</h2>
+            <div className="grid grid-cols-1 gap-3 text-slate-300 sm:grid-cols-2">
+              {advantages.map((item) => (
+                <div key={item} className="rounded-xl border border-white/10 bg-white/5 px-4 py-3">
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="space-y-4">
+            <p className="text-sm uppercase tracking-[0.3em] text-amber-300/80">Innovation</p>
+            <h2 className="text-3xl font-bold text-white md:text-4xl">Бусдаас ялгарах цөм</h2>
+            <div className="grid grid-cols-1 gap-3 text-slate-300 sm:grid-cols-2">
+              {innovations.map((item) => (
+                <div key={item} className="rounded-xl border border-white/10 bg-white/5 px-4 py-3">
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="impact" className="relative z-10 px-6 py-20">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-12 max-w-2xl space-y-4">
+            <p className="text-sm uppercase tracking-[0.3em] text-emerald-300/80">Impact</p>
+            <h2 className="text-3xl font-bold text-white md:text-4xl">Боловсролын үр нөлөө</h2>
+            <p className="text-slate-300">
+              EduGen AI нь багшийн ажлыг хөнгөвчилж, сурагч бүрийн оролцоог
+              нэмэгдүүлснээр урт хугацааны өөрчлөлт авчирна.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+            {impacts.map((item) => (
+              <div key={item.value} className="rounded-2xl border border-white/10 bg-white/5 p-5">
+                <p className="text-lg font-semibold text-white">{item.value}</p>
+                <p className="mt-2 text-sm text-slate-300">{item.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="future" className="relative z-10 border-t border-white/5 bg-slate-950/60 px-6 py-20">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-12 max-w-2xl space-y-4">
+            <p className="text-sm uppercase tracking-[0.3em] text-amber-300/80">Future Work</p>
+            <h2 className="text-3xl font-bold text-white md:text-4xl">Дараагийн үе шат</h2>
+            <p className="text-slate-300">
+              Хэрэглэгчийн хэрэгцээ, сургалтын орчны онцлогт тохируулан
+              өргөжүүлнэ.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            {futureWork.map((item) => (
+              <div key={item} className="rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-slate-300">
+                {item}
+              </div>
+            ))}
+          </div>
+          <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+              <h3 className="text-lg font-semibold text-white">MVP хувилбар</h3>
+              <div className="mt-4 grid grid-cols-1 gap-2 text-sm text-slate-300 sm:grid-cols-2">
+                {mvpFeatures.map((item) => (
+                  <div key={item} className="rounded-xl border border-white/5 bg-slate-900/40 px-3 py-2">
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+              <h3 className="text-lg font-semibold text-white">Tech stack</h3>
+              <div className="mt-4 grid grid-cols-1 gap-2 text-sm text-slate-300">
+                {techStack.map((item) => (
+                  <div key={item} className="rounded-xl border border-white/5 bg-slate-900/40 px-3 py-2">
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" className="relative z-10 px-6 py-24">
+        <div className="mx-auto max-w-5xl">
+          <div className="rounded-[32px] border border-white/10 bg-gradient-to-br from-white/10 via-white/5 to-white/5 p-10 text-center shadow-2xl">
+            <p className="text-sm uppercase tracking-[0.3em] text-emerald-300/80">Pitch</p>
+            <h2 className="mt-4 text-3xl font-bold text-white md:text-4xl">
+              “Нэг материал → олон түвшний хичээл → хувь хүнд тохирсон
+              туршлага.”
+            </h2>
+            <p className="mt-6 text-slate-300">
+              EduGen AI бол багшийн ачааллыг бууруулж, сурагч бүрт тохирсон
+              сургалтыг бий болгох AI-powered adaptive learning platform юм.
+            </p>
+            <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+              <Link
+                href="/teacher/dashboard"
+                className="rounded-xl bg-emerald-400 px-7 py-3 text-sm font-semibold text-slate-900 transition hover:bg-emerald-300"
+              >
+                Багшийн Самбар руу орох
+              </Link>
+              <Link
+                href="mailto:hello@edugen.ai"
+                className="rounded-xl border border-white/15 bg-white/5 px-7 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+              >
+                Сургуультай хамтрах
+              </Link>
+            </div>
+            <p className="mt-6 text-xs text-slate-400">
+              Багийн нэр: MindSpark (санал). Гишүүдийн нэрсийг энд оруулна.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <footer className="relative z-10 border-t border-white/5 bg-slate-950/80 px-6 py-10">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 md:flex-row">
+          <p className="text-sm text-slate-400">© 2026 EduGen AI. Бүх эрх хуулиар хамгаалагдсан.</p>
+          <div className="flex flex-wrap justify-center gap-6 text-sm text-slate-400">
+            <a href="#solution" className="transition hover:text-white">
+              Бүтээгдэхүүн
+            </a>
+            <a href="#demo" className="transition hover:text-white">
+              Demo
+            </a>
+            <a href="#contact" className="transition hover:text-white">
+              Холбоо барих
+            </a>
+          </div>
+        </div>
+      </footer>
+    </div>
   );
 }
