@@ -13,6 +13,30 @@ export function StudentLayout({ children, activePath = "/student/dashboard" }: S
   const router = useRouter();
   const [toast, setToast] = React.useState("");
 
+  const [userProfile, setUserProfile] = React.useState<any>(null);
+
+  React.useEffect(() => {
+    const loadUser = () => {
+      const userStr = localStorage.getItem("edugen_user");
+      if (!userStr) {
+        router.push("/login");
+      } else {
+        try {
+          const user = JSON.parse(userStr);
+          if (user.role !== "student") {
+            router.push("/teacher/dashboard");
+          } else {
+            setUserProfile(user);
+          }
+        } catch (e) {}
+      }
+    };
+
+    loadUser();
+    window.addEventListener("storage", loadUser);
+    return () => window.removeEventListener("storage", loadUser);
+  }, [router]);
+
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     if (href === "#soon") {
       e.preventDefault();
@@ -29,8 +53,8 @@ export function StudentLayout({ children, activePath = "/student/dashboard" }: S
 
   const studentNav = [
     { name: "Самбар", href: "/student/dashboard", icon: Home },
-    { name: "Миний явц", href: "#soon", icon: BarChart3 },
-    { name: "Алдаа засах", href: "#soon", icon: Sparkles },
+    { name: "Миний явц", href: "/student/progress", icon: BarChart3 },
+    { name: "Алдаа засах", href: "/student/mistakes", icon: Sparkles },
     { name: "AI Туслах", href: "/student/ai-assistant", icon: MessageSquare },
   ];
 
@@ -88,9 +112,15 @@ export function StudentLayout({ children, activePath = "/student/dashboard" }: S
           <h1 className="text-lg font-medium hidden md:block glow-text-cyan">Сурагчийн хэсэг</h1>
           
           <div className="flex items-center gap-4">
-            <div className="h-8 w-8 text-sm font-bold flex items-center justify-center rounded-full bg-gradient-to-br from-[#00f5ff] to-[#b05cfd] border border-[#00f5ff]/50 shadow-[0_0_15px_rgba(0,245,255,0.3)] shadow-sm">
-              А
-            </div>
+            <a href="/student/settings" className="hover:opacity-80 transition-opacity">
+              <div className="h-8 w-8 text-xs font-bold flex items-center justify-center rounded-full bg-gradient-to-br from-[#00f5ff] to-[#b05cfd] border border-[#00f5ff]/50 shadow-[0_0_15px_rgba(0,245,255,0.3)] shadow-sm overflow-hidden text-white">
+                {userProfile?.avatar ? (
+                   <img src={userProfile.avatar} alt="Avatar" className="w-full h-full object-cover" />
+                ) : (
+                   userProfile?.name?.charAt(0) || "A"
+                )}
+              </div>
+            </a>
           </div>
         </header>
         <main className="flex-1 overflow-y-auto p-4 md:p-8 relative z-10">

@@ -11,19 +11,32 @@ export default function TeacherDashboard() {
   const [searchTerm, setSearchTerm] = useState("");
   const [lessons, setLessons] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [userName, setUserName] = useState("Багш аа");
 
   useEffect(() => {
+    let uid = "";
+    const userStr = localStorage.getItem("edugen_user");
+    if (userStr) {
+      try {
+        const user = JSON.parse(userStr);
+        if (user.name) setUserName(user.name);
+        if (user.id) uid = user.id;
+      } catch (e) {}
+    }
+
     fetch('/api/lesson')
       .then(res => res.json())
       .then(data => {
         if (data.success) {
+           const myLessons = data.lessons.filter((l: any) => l.createdById === uid);
+           
            // map JSON DB lessons to table format
-           const mapped = data.lessons.map((l: any) => ({
+           const mapped = myLessons.map((l: any) => ({
               id: l.id,
               title: l.title,
               date: new Date(l.createdAt).toLocaleDateString(),
-              students: Math.floor(Math.random() * 20) + 15, // random mock student count
-              avgScore: `${Math.floor(Math.random() * 30) + 65}%` // random mock score
+              students: 0, 
+              avgScore: `0%` 
            }));
            setLessons(mapped.reverse());
         }
@@ -38,21 +51,21 @@ export default function TeacherDashboard() {
 
   return (
     <DashboardLayout activePath="/teacher/dashboard">
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight text-white mb-1">Сайн байна уу, Багш аа! 👋</h2>
+          <h2 className="text-2xl font-bold tracking-tight text-white mb-1">Сайн байна уу, {userName}! 👋</h2>
           <p className="text-slate-400">Өнөөдөр юу сургах вэ? Шинэ контент үүсгэх эсвэл өмнөх үр дүнгээ хараарай.</p>
         </div>
         
-        <Link href="/teacher/upload">
-          <Button variant="premium" className="gap-2 px-6 h-12 text-md">
-            <Sparkles className="h-5 w-5" />
-            AI-аар хичээл үүсгэх
+        <Link href="/teacher/upload" className="w-full sm:w-auto">
+          <Button variant="premium" className="w-full sm:w-auto gap-2 px-6 h-12 text-md">
+             <Sparkles className="h-5 w-5" />
+             AI-аар хичээл үүсгэх
           </Button>
         </Link>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-8">
         <Card className="bg-slate-900/40 border-slate-800">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-slate-400">Нийт хичээлүүд</CardTitle>
@@ -69,8 +82,8 @@ export default function TeacherDashboard() {
             <Users className="h-4 w-4 text-emerald-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-white">134</div>
-            <p className="text-xs text-emerald-400 mt-1">+12 шинэ сурагч</p>
+            <div className="text-2xl font-bold text-white">0</div>
+            <p className="text-xs text-emerald-400 mt-1">Одоогоор шинэ сурагч алга</p>
           </CardContent>
         </Card>
         <Card className="bg-slate-900/40 border-slate-800">
@@ -79,8 +92,8 @@ export default function TeacherDashboard() {
             <BarChart3 className="h-4 w-4 text-emerald-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-white">78%</div>
-            <p className="text-xs text-red-400 mt-1">-2% өмнөх сараас</p>
+            <div className="text-2xl font-bold text-white">0%</div>
+            <p className="text-xs text-slate-400 mt-1">Тооцоолоход эрт байна</p>
           </CardContent>
         </Card>
         <Card className="bg-slate-900/40 border-slate-800">
@@ -95,9 +108,9 @@ export default function TeacherDashboard() {
         </Card>
       </div>
 
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <h3 className="text-xl font-semibold text-white">Сүүлд үүсгэсэн хичээлүүд</h3>
-        <div className="relative w-72">
+        <div className="relative w-full sm:w-72">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
           <input 
             type="text" 
@@ -138,9 +151,11 @@ export default function TeacherDashboard() {
                     </span>
                   </td>
                   <td className="px-6 py-4 text-right space-x-2">
-                    <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-white">
-                      <Edit2 className="h-4 w-4" />
-                    </Button>
+                    <Link href={`/teacher/lesson/${lesson.id}`}>
+                      <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-white">
+                        <Edit2 className="h-4 w-4" />
+                      </Button>
+                    </Link>
                     <Link href={`/student/lesson/${lesson.id}`}>
                       <Button variant="ghost" size="icon" className="h-8 w-8 text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10">
                         <PlayCircle className="h-4 w-4" />

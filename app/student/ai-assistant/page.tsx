@@ -3,13 +3,15 @@
 import { useState, useRef, useEffect } from "react";
 import { StudentLayout } from "@/components/layout/student-layout";
 import { Sparkles, ArrowRight, MessageSquare, BookOpen } from "@/components/ui/icons";
+import { MarkdownRenderer } from "@/components/ui/markdown-renderer";
 
 export default function AiAssistantPage() {
-  const [messages, setMessages] = useState([
+  const [messages, setMessages] = useState<any[]>([
     { isAi: true, text: "Сайн уу? Би бол EduGen AI багш байна. Танд ямар хичээл дээр, юуг ойлгоход туслах вэ? Юу ч асуусан болно шүү! ✨" }
   ]);
   const [chatInput, setChatInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [userProfile, setUserProfile] = useState<any>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -20,32 +22,70 @@ export default function AiAssistantPage() {
     scrollToBottom();
   }, [messages, isTyping]);
 
+  // Load User and History
+  useEffect(() => {
+    const userStr = localStorage.getItem("edugen_user");
+    if (userStr) {
+      try {
+        const user = JSON.parse(userStr);
+        setUserProfile(user);
+        
+        // Fetch History from DB
+        fetch(`/api/chat/history?userId=${user.id}`)
+          .then(res => res.json())
+          .then(data => {
+            if (data.success && data.messages && data.messages.length > 0) {
+              setMessages(data.messages);
+            }
+          });
+      } catch (e) {}
+    }
+  }, []);
+
+  const saveHistory = async (newMessages: any[]) => {
+    if (!userProfile?.id) return;
+    try {
+      await fetch("/api/chat/history", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: userProfile.id,
+          messages: newMessages
+        })
+      });
+    } catch (e) {}
+  };
+
   const handleChatSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!chatInput.trim() || isTyping) return;
 
     const userMsg = { isAi: false, text: chatInput };
-    setMessages(prev => [...prev, userMsg]);
+    const updatedMessagesWithUser = [...messages, userMsg];
+    setMessages(updatedMessagesWithUser);
     setChatInput("");
     setIsTyping(true);
 
     try {
-      const payloadMessages = [...messages, userMsg];
-
       const res = await fetch("/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-              messages: payloadMessages,
-              lessonContext: "Ерөнхий мэдлэг болон бүх төрлийн хичээл. Сурагчийн нас болон сэтгэхүйд тохируулан тайлбарлана."
+              messages: updatedMessagesWithUser,
+              lessonContext: "Ерөнхий мэдлэг болон бүх төрлийн хичээл. Сурагчийн нас болон сэтгэхүйд тохируулан тайлбарлана.",
+              userProfile: userProfile
           })
       });
 
       const data = await res.json();
       if (data.success) {
-          setMessages(prev => [...prev, { isAi: true, text: data.text }]);
+          const aiMsg = { isAi: true, text: data.text };
+          const finalMessages = [...updatedMessagesWithUser, aiMsg];
+          setMessages(finalMessages);
+          saveHistory(finalMessages);
       } else {
-          setMessages(prev => [...prev, { isAi: true, text: "Уучлаарай, холболт салсан байна. Дахин оролдоно уу." }]);
+          const errorMsg = { isAi: true, text: data.text || "Уучлаарай, холболт салсан байна. Дахин оролдоно уу." };
+          setMessages(prev => [...prev, errorMsg]);
       }
     } catch (error) {
         setMessages(prev => [...prev, { isAi: true, text: "Сүлжээний алдаа гарлаа. Та интернэтээ шалгана уу." }]);
@@ -67,7 +107,7 @@ export default function AiAssistantPage() {
             <div>
               <h3 className="font-bold text-white text-xl glow-text-purple">Төгс AI Багш</h3>
               <p className="text-xs text-[#00f5ff] flex items-center gap-1.5 font-medium mt-1">
-                <span className="w-2 h-2 rounded-full bg-[#00f5ff] inline-block shadow-[0_0_5px_#00f5ff] animate-pulse" /> Одоо танд туслахад бэлэн
+                <span className="w-2 h-2 rounded-full bg-[#00f5ff] inline-block shadow-[0_0_5px_#00f5ff] animate-pulse" /> {userProfile?.name}-д туслахад бэлэн
               </p>
             </div>
         </div>
@@ -84,7 +124,7 @@ export default function AiAssistantPage() {
                     ? "bg-gradient-to-r from-[#b05cfd] to-purple-600 font-medium text-white shadow-[0_4px_15px_rgba(176,92,253,0.3)] rounded-br-[4px]" 
                     : "bg-[#110c22] text-slate-200 border border-white/10 rounded-tl-[4px] glow-card"
                 }`}>
-                  {msg.text}
+                  {msg.isAi ? <MarkdownRenderer content={msg.text} /> : msg.text}
                 </div>
               </div>
             ))}
@@ -104,7 +144,7 @@ export default function AiAssistantPage() {
         <div className="p-6 border-t border-[#00f5ff]/20 bg-[#070914] z-10 relative">
             <div className="absolute top-0 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-[#00f5ff]/50 to-transparent" />
             
-            {messages.length === 1 && (
+            {messages.length <= 1 && (
                 <div className="flex gap-2 mb-4 overflow-x-auto pb-2 scrollbar-hide">
                     <button onClick={() => setChatInput("Биологийн хичээл дээр ДНХ гэж юу болохыг хялбархан тайлбарлаж өгөөч")} className="whitespace-nowrap px-4 py-2 rounded-full border border-white/10 bg-white/5 text-slate-300 text-xs hover:bg-white/10 transition-colors">🧬 ДНХ гэж юу вэ?</button>
                     <button onClick={() => setChatInput("Уран зохиолын хичээлд туслаач")} className="whitespace-nowrap px-4 py-2 rounded-full border border-white/10 bg-white/5 text-slate-300 text-xs hover:bg-white/10 transition-colors">📚 Уран зохиол</button>

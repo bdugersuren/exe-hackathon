@@ -24,7 +24,10 @@ const defaultData = {
     }
   ],
   lessons: [],
-  progress: []
+  progress: [],
+  chats: [],
+  mistakes: [],
+  progressAnalyses: []
 };
 
 // Initialize DB if it doesn't exist

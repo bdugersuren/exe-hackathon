@@ -13,6 +13,30 @@ export function DashboardLayout({ children, activePath = "/teacher/dashboard" }:
   const router = useRouter();
   const [toast, setToast] = React.useState("");
 
+  const [userProfile, setUserProfile] = React.useState<any>(null);
+
+  React.useEffect(() => {
+    const loadUser = () => {
+      const userStr = localStorage.getItem("edugen_user");
+      if (!userStr) {
+        router.push("/login");
+      } else {
+        try {
+          const user = JSON.parse(userStr);
+          if (user.role !== "teacher") {
+            router.push("/student/dashboard");
+          } else {
+            setUserProfile(user);
+          }
+        } catch (e) {}
+      }
+    };
+
+    loadUser();
+    window.addEventListener("storage", loadUser);
+    return () => window.removeEventListener("storage", loadUser);
+  }, [router]);
+
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     if (href === "#soon") {
       e.preventDefault();
@@ -30,8 +54,7 @@ export function DashboardLayout({ children, activePath = "/teacher/dashboard" }:
   const teacherNav = [
     { name: "Самбар", href: "/teacher/dashboard", icon: BarChart3 },
     { name: "Хичээлүүд", href: "/teacher/upload", icon: BookOpen },
-    { name: "Сурагчид", href: "#soon", icon: Users },
-    { name: "Тохиргоо", href: "#soon", icon: PlayCircle },
+    { name: "Сурагчид", href: "/teacher/students", icon: Users },
   ];
 
   return (
@@ -66,7 +89,7 @@ export function DashboardLayout({ children, activePath = "/teacher/dashboard" }:
         </div>
         
         <div className="p-4 border-t border-white/10 space-y-1">
-          <a href="#soon" onClick={(e) => handleLinkClick(e, "#soon")} className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-slate-100 hover:bg-white/5 transition-colors">
+          <a href="/teacher/settings" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${activePath === "/teacher/settings" ? "bg-white/10 text-white font-medium" : "text-slate-400 hover:text-slate-100 hover:bg-white/5"}`}>
             <Settings className="h-5 w-5" />
             Тохиргоо
           </a>
@@ -85,7 +108,13 @@ export function DashboardLayout({ children, activePath = "/teacher/dashboard" }:
         <header className="h-16 border-b border-[#00f5ff]/10 bg-[#070914]/80 backdrop-blur-md flex items-center justify-between px-8 z-10">
           <h1 className="text-lg font-medium glow-text-purple">Багшийн удирдлага</h1>
           <div className="flex items-center gap-4">
-            <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#00f5ff] to-[#b05cfd] border border-[#00f5ff]/50 shadow-[0_0_15px_rgba(0,245,255,0.3)] shadow-sm" />
+            <div className="h-8 w-8 rounded-full border border-[#00f5ff]/50 shadow-[0_0_15px_rgba(0,245,255,0.3)] shadow-sm bg-gradient-to-br from-[#00f5ff] to-[#b05cfd] overflow-hidden flex items-center justify-center text-xs font-bold text-white">
+              {userProfile?.avatar ? (
+                 <img src={userProfile.avatar} alt="Avatar" className="w-full h-full object-cover" />
+              ) : (
+                 userProfile?.name?.charAt(0) || "T"
+              )}
+            </div>
           </div>
         </header>
         <main className="flex-1 overflow-y-auto p-8 relative z-10">

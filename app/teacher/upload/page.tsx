@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 export default function TeacherUploadPage() {
   const router = useRouter();
   const [materialText, setMaterialText] = useState("");
-  const [subject, setSubject] = useState("");
+  const [subject, setSubject] = useState("Математик");
   const [grade, setGrade] = useState("");
   const [fileBase64, setFileBase64] = useState<string | null>(null);
   const [fileMimeType, setFileMimeType] = useState<string | null>(null);
@@ -167,13 +167,15 @@ export default function TeacherUploadPage() {
             <div className="grid grid-cols-2 gap-4">
                 <div>
                     <label className="block text-xs font-semibold text-slate-400 mb-2 uppercase">Хичээлийн сэдэв</label>
-                    <input 
-                        type="text" 
+                    <select 
                         value={subject}
                         onChange={e => setSubject(e.target.value)}
-                        className="w-full bg-[#110c22]/50 border border-slate-700/50 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#00f5ff]/50"
-                        placeholder="Жишээ: Биологи - Эсийн бүтэц"
-                    />
+                        className="w-full bg-[#110c22]/50 border border-slate-700/50 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#00f5ff]/50 appearance-none"
+                    >
+                        <option value="Математик">Математик</option>
+                        <option value="Нийгэм">Нийгэм</option>
+                        <option value="Монгол хэл">Монгол хэл</option>
+                    </select>
                 </div>
                 <div>
                     <label className="block text-xs font-semibold text-slate-400 mb-2 uppercase">Анги</label>
@@ -210,7 +212,7 @@ export default function TeacherUploadPage() {
             </Card>
 
             <div className="flex justify-end gap-4">
-              <Button variant="outline" className="border-white/20 text-white" onClick={() => {setMaterialText(""); setSubject(""); setGrade(""); setFileName(null); setFileBase64(null); setFileMimeType(null);}}>Цэвэрлэх</Button>
+              <Button variant="outline" className="border-white/20 text-white" onClick={() => {setMaterialText(""); setSubject("Математик"); setGrade(""); setFileName(null); setFileBase64(null); setFileMimeType(null);}}>Цэвэрлэх</Button>
               <button 
                 disabled={!materialText || !subject || !grade} 
                 className="gap-2 px-8 py-2.5 rounded-full button-gradient disabled:opacity-50 disabled:cursor-not-allowed flex items-center font-bold"
