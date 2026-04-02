@@ -5,19 +5,34 @@ import { Button } from "@/components/ui/button";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { Sparkles, Edit2, PlayCircle, BarChart3, Users } from "@/components/ui/icons";
 import Link from "next/link";
-import { useState } from "react";
-
-const mockLessons = [
-  { id: 1, title: "Биологи - Эсийн бүтэц", date: "2026-04-01", students: 34, avgScore: "85%" },
-  { id: 2, title: "Физик - Ньютоны хуулиуд", date: "2026-03-29", students: 32, avgScore: "72%" },
-  { id: 3, title: "Түүх - Их Монгол Улс", date: "2026-03-25", students: 35, avgScore: "91%" },
-  { id: 4, title: "Уран зохиол - Тунгалаг тамир", date: "2026-03-20", students: 33, avgScore: "88%" },
-];
+import { useState, useEffect } from "react";
 
 export default function TeacherDashboard() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [lessons, setLessons] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const filteredLessons = mockLessons.filter(lesson => 
+  useEffect(() => {
+    fetch('/api/lesson')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+           // map JSON DB lessons to table format
+           const mapped = data.lessons.map((l: any) => ({
+              id: l.id,
+              title: l.title,
+              date: new Date(l.createdAt).toLocaleDateString(),
+              students: Math.floor(Math.random() * 20) + 15, // random mock student count
+              avgScore: `${Math.floor(Math.random() * 30) + 65}%` // random mock score
+           }));
+           setLessons(mapped.reverse());
+        }
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+  const filteredLessons = lessons.filter(lesson => 
     lesson.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -44,8 +59,8 @@ export default function TeacherDashboard() {
             <BookOpen className="h-4 w-4 text-emerald-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-white">24</div>
-            <p className="text-xs text-emerald-400 mt-1">+2 энэ долоо хоногт</p>
+            <div className="text-2xl font-bold text-white">{lessons.length}</div>
+            <p className="text-xs text-emerald-400 mt-1">Нийт үүссэн</p>
           </CardContent>
         </Card>
         <Card className="bg-slate-900/40 border-slate-800">
@@ -134,13 +149,19 @@ export default function TeacherDashboard() {
                   </td>
                 </tr>
               ))}
-              {filteredLessons.length === 0 && (
+              {loading ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-slate-400">
-                    Илэрц олдсонгүй
+                  <td colSpan={5} className="px-6 py-12 text-center text-[#00f5ff] animate-pulse">
+                    Хичээлүүдийг татаж байна...
                   </td>
                 </tr>
-              )}
+              ) : filteredLessons.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="px-6 py-12 text-center text-slate-400">
+                    Илэрц олдсонгүй эсвэл хичээл үүсгээгүй байна.
+                  </td>
+                </tr>
+              ) : null}
             </tbody>
           </table>
         </div>

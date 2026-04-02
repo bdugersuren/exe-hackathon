@@ -5,6 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BookOpen as BookIcon, PlayCircle as PlayIcon, Sparkles as SparkleIcon, ArrowRight } from "@/components/ui/icons";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 
 function AlertCircleIcon(props: any) {
   return (
@@ -26,6 +27,27 @@ function TrendingUpIcon(props: any) {
 }
 
 export default function StudentDashboard() {
+  const [lessons, setLessons] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/lesson')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+           const mapped = data.lessons.map((l: any) => ({
+              id: l.id,
+              title: l.title,
+              subject: l.subject,
+              progress: Math.floor(Math.random() * 100), // Random mock progress
+           }));
+           setLessons(mapped.reverse());
+        }
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
   return (
     <StudentLayout activePath="/student/dashboard">
       <div className="mb-8">
@@ -111,27 +133,41 @@ export default function StudentDashboard() {
         <h3 className="text-lg font-semibold text-white mb-4">Бүх хичээлүүд</h3>
         
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {[
-            { id: 2, title: "Түүх - Их Монгол Улс", progress: 100, score: "90%" },
-            { id: 3, title: "Газарзүй - Дэлхийн бүтцүүд", progress: 60, score: "-" },
-            { id: 4, title: "Англи хэл - Present Tense", progress: 0, score: "-" },
-          ].map(lesson => (
-            <div key={lesson.id} className="bg-slate-900/30 border border-slate-800 rounded-xl p-4 flex gap-4 hover:bg-slate-900/50 transition-colors">
-              <div className="h-12 w-12 rounded-lg bg-indigo-500/10 flex items-center justify-center shrink-0">
-                <BookIcon className="h-6 w-6 text-indigo-400" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <h4 className="text-sm font-bold text-white truncate">{lesson.title}</h4>
-                <div className="mt-2 flex items-center justify-between text-xs text-slate-400">
-                  <span>{lesson.progress}% дууссан</span>
-                  {lesson.score !== "-" && <span className="text-emerald-400 font-medium">Оноо: {lesson.score}</span>}
-                </div>
-                <div className="mt-1 w-full h-1 bg-slate-800 rounded-full overflow-hidden">
-                  <div className="h-full bg-indigo-500 transition-all" style={{ width: `${lesson.progress}%` }} />
-                </div>
-              </div>
-            </div>
-          ))}
+            {loading ? (
+                <div className="text-[#00f5ff] animate-pulse col-span-3">Хичээлүүд уншиж байна...</div>
+            ) : lessons.length === 0 ? (
+                <div className="text-slate-400 col-span-3">Одоогоор идэвхтэй хичээл алга байна.</div>
+            ) : (
+                lessons.map((lesson) => (
+                  <Card key={lesson.id} className="bg-slate-900/40 border-slate-800 hover:border-emerald-500/50 transition-colors">
+                    <CardContent className="p-6">
+                      <div className="flex justify-between items-start mb-4">
+                        <div className="px-2 py-1 bg-emerald-500/10 text-emerald-400 rounded text-xs font-medium">
+                          {lesson.subject}
+                        </div>
+                      </div>
+                      <h3 className="font-bold text-white mb-2">{lesson.title}</h3>
+                      
+                      <div className="mt-4 mb-6">
+                        <div className="flex justify-between text-sm mb-1">
+                          <span className="text-slate-400">Явц</span>
+                          <span className="text-white font-medium">{lesson.progress}%</span>
+                        </div>
+                        <div className="w-full bg-slate-800 rounded-full h-1.5">
+                          <div className="bg-emerald-500 h-1.5 rounded-full" style={{ width: `${lesson.progress}%` }}></div>
+                        </div>
+                      </div>
+
+                      <Link href={`/student/lesson/${lesson.id}`}>
+                        <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white gap-2">
+                          <PlayIcon className="h-4 w-4" />
+                          {lesson.progress > 0 ? 'Үргэлжлүүлэх' : 'Эхлэх'}
+                        </Button>
+                      </Link>
+                    </CardContent>
+                  </Card>
+                ))
+            )}
         </div>
       </div>
     </StudentLayout>
