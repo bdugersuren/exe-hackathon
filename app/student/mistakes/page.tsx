@@ -85,7 +85,7 @@ export default function StudentMistakesPage() {
         </Card>
       ) : (
         <div className="grid gap-6">
-          <div className="grid lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="space-y-4">
                {mistakes.map((mistake) => (
                   <Card key={mistake.id} className={`bg-[#110c22] border transition-all cursor-pointer overflow-hidden ${explainingId === mistake.id || (explanation && mistakes.find(m => m.id === explainingId)?.id === mistake.id) ? 'border-[#b05cfd]' : 'border-white/5 hover:border-white/20'}`} onClick={() => getAIExplanation(mistake)}>

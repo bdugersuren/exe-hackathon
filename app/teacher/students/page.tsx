@@ -88,9 +88,9 @@ export default function TeacherStudentsPage() {
           <p className="text-slate-400">Өгөгдлийг нэгтгэж байна...</p>
         </div>
       ) : (
-        <div className="space-y-8 animate-in fade-in duration-500">
+        <div className="space-y-8 animate-in fade-in duration-500 overflow-hidden">
           {/* Summary Cards */}
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <Card className="bg-[#110c22] border-white/5 p-6 flex flex-col items-center justify-center text-center glow-card">
               <div className="w-12 h-12 rounded-xl bg-[#00f5ff]/10 text-[#00f5ff] flex items-center justify-center mb-3">
                 <Users className="w-6 h-6" />
@@ -167,8 +167,8 @@ export default function TeacherStudentsPage() {
 
           {/* Student Table */}
           <Card className="bg-[#110c22] border-white/5 overflow-hidden">
-             <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse">
+             <div className="overflow-x-auto scrollbar-hide">
+                <table className="w-full text-left border-collapse min-w-[600px]">
                    <thead>
                       <tr className="border-b border-white/5 bg-white/5">
                          <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Сурагч</th>

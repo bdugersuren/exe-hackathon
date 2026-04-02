@@ -110,7 +110,7 @@ export default function StudentDashboard() {
         </div>
       </div>
 
-      <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3 mb-8">
+      <div className="grid gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mb-8">
         {currentLesson ? (
         <Card className="bg-emerald-950/30 border-emerald-900 overflow-hidden relative">
           <div className="absolute right-0 top-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl" />

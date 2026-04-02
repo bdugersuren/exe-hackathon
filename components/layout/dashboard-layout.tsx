@@ -12,7 +12,6 @@ interface SidebarProps {
 export function DashboardLayout({ children, activePath = "/teacher/dashboard" }: SidebarProps) {
   const router = useRouter();
   const [toast, setToast] = React.useState("");
-
   const [userProfile, setUserProfile] = React.useState<any>(null);
 
   React.useEffect(() => {
@@ -58,9 +57,9 @@ export function DashboardLayout({ children, activePath = "/teacher/dashboard" }:
   ];
 
   return (
-    <div className="min-h-screen bg-[#070914] text-slate-100 flex font-sans selection:bg-[#b05cfd]/30">
-      {/* Sidebar */}
-      <div className="w-64 border-r border-[#b05cfd]/20 bg-[#0b0a1a]/80 glow-card rounded-none flex flex-col">
+    <div className="min-h-screen bg-[#070914] text-slate-100 flex flex-col md:flex-row pb-16 md:pb-0 font-sans selection:bg-[#b05cfd]/30 overflow-hidden">
+      {/* Sidebar - Desktop Only */}
+      <div className="hidden md:flex w-64 border-r border-[#b05cfd]/20 bg-[#0b0a1a]/80 glow-card rounded-none flex-col h-screen sticky top-0">
         <div className="h-16 flex items-center px-6 border-b border-[#00f5ff]/20">
           <a href="/" className="text-xl font-extrabold tracking-tight text-white flex items-center gap-2">
             <span className="h-8 w-8 rounded-lg bg-gradient-to-br from-[#b05cfd] to-[#00f5ff] flex items-center justify-center shadow-[0_0_15px_rgba(0,245,255,0.4)]">
@@ -105,8 +104,15 @@ export function DashboardLayout({ children, activePath = "/teacher/dashboard" }:
         <div className="absolute top-[-20%] right-[-10%] w-[50%] h-[50%] bg-[#b05cfd]/10 blur-[150px] rounded-full pointer-events-none" />
         <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-[#00f5ff]/5 blur-[120px] rounded-full pointer-events-none" />
         
-        <header className="h-16 border-b border-[#00f5ff]/10 bg-[#070914]/80 backdrop-blur-md flex items-center justify-between px-8 z-10">
-          <h1 className="text-lg font-medium glow-text-purple">Багшийн удирдлага</h1>
+        <header className="h-16 border-b border-[#00f5ff]/10 bg-[#070914]/80 backdrop-blur-md flex items-center justify-between px-6 md:px-8 z-10 shrink-0">
+          <div className="flex items-center gap-2 md:hidden">
+             <span className="h-8 w-8 rounded-lg bg-gradient-to-br from-[#b05cfd] to-[#00f5ff] flex items-center justify-center">
+                <BookOpen className="h-5 w-5 text-white" />
+             </span>
+             <h1 className="text-lg font-bold glow-text-cyan">EduGen</h1>
+          </div>
+          <h1 className="text-sm md:text-lg font-medium glow-text-purple hidden md:block">Багшийн удирдлага</h1>
+          
           <div className="flex items-center gap-4">
             <div className="h-8 w-8 rounded-full border border-[#00f5ff]/50 shadow-[0_0_15px_rgba(0,245,255,0.3)] shadow-sm bg-gradient-to-br from-[#00f5ff] to-[#b05cfd] overflow-hidden flex items-center justify-center text-xs font-bold text-white">
               {userProfile?.avatar ? (
@@ -117,15 +123,42 @@ export function DashboardLayout({ children, activePath = "/teacher/dashboard" }:
             </div>
           </div>
         </header>
-        <main className="flex-1 overflow-y-auto p-8 relative z-10">
+
+        <main className="flex-1 overflow-y-auto p-4 md:p-8 relative z-10">
           {children}
         </main>
 
         {toast && (
-          <div className="absolute bottom-10 right-10 bg-[#00f5ff]/20 border border-[#00f5ff]/50 text-[#00f5ff] px-6 py-3 rounded-xl backdrop-blur-md shadow-[0_0_20px_rgba(0,245,255,0.3)] animate-[rise_0.3s_ease-out] z-50">
+          <div className="fixed bottom-20 md:bottom-10 right-4 md:right-10 bg-[#00f5ff]/20 border border-[#00f5ff]/50 text-[#00f5ff] px-6 py-3 rounded-xl backdrop-blur-md shadow-[0_0_20px_rgba(0,245,255,0.3)] animate-[rise_0.3s_ease-out] z-50">
             {toast}
           </div>
         )}
+      </div>
+
+      {/* Mobile Bottom Nav */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-[#0b0a1a]/95 backdrop-blur-lg border-t border-[#b05cfd]/20 flex items-center justify-around z-50">
+        {teacherNav.map((item) => (
+          <a
+            key={item.name}
+            href={item.href}
+            onClick={(e) => handleLinkClick(e, item.href)}
+            className={`flex flex-col items-center justify-center w-full h-full gap-1 transition-colors ${
+              activePath === item.href ? "text-[#00f5ff] drop-shadow-[0_0_8px_rgba(0,245,255,0.5)]" : "text-slate-500"
+            }`}
+          >
+            <item.icon className="h-5 w-5" />
+            <span className="text-[10px] font-medium">{item.name}</span>
+          </a>
+        ))}
+        <a
+          href="/teacher/settings"
+          className={`flex flex-col items-center justify-center w-full h-full gap-1 transition-colors ${
+            activePath === "/teacher/settings" ? "text-white" : "text-slate-500"
+          }`}
+        >
+          <Settings className="h-5 w-5" />
+          <span className="text-[10px] font-medium">Тохиргоо</span>
+        </a>
       </div>
     </div>
   );

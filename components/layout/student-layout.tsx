@@ -59,7 +59,7 @@ export function StudentLayout({ children, activePath = "/student/dashboard" }: S
   ];
 
   return (
-    <div className="min-h-screen bg-[#070914] text-slate-100 flex pb-16 md:pb-0 font-sans selection:bg-[#00f5ff]/30">
+    <div className="min-h-screen bg-[#070914] text-slate-100 flex flex-col md:flex-row pb-16 md:pb-0 font-sans selection:bg-[#00f5ff]/30 overflow-hidden">
       {/* Sidebar for Desktop */}
       <div className="hidden md:flex w-64 border-r border-[#00f5ff]/20 bg-[#0b0a1a]/80 glow-card rounded-none flex-col">
         <div className="h-16 flex items-center px-6 border-b border-[#b05cfd]/20">

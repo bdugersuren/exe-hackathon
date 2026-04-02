@@ -151,7 +151,7 @@ export default function StudentProgressPage() {
         </Card>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8 mb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
         {/* Left Column: Progress Chart (CSS/SVG) */}
         <div className="lg:col-span-2 space-y-8">
             <Card className="bg-[#110c22] border-white/5 p-8 flex flex-col min-h-[300px]">

@@ -74,13 +74,13 @@ export default function Home() {
           <div className="relative w-full h-[500px] animate-[float_6s_ease-in-out_infinite]">
             <div className="absolute inset-0 bg-gradient-to-tr from-[#00f5ff]/20 to-[#b05cfd]/20 rounded-2xl blur-3xl" />
             
-            {/* Mock Dashboard UI floating */}
-            <div className="absolute top-10 right-0 w-[450px] h-[300px] glow-card overflow-hidden bg-[#0c1226]/90 border-[#b05cfd]/30">
+            {/* Mock Dashboard UI floating - Hidden on small mobile */}
+            <div className="absolute top-10 right-0 w-[300px] md:w-[450px] h-[250px] md:h-[300px] glow-card overflow-hidden bg-[#0c1226]/90 border-[#b05cfd]/30 scale-75 md:scale-100 origin-right">
                <div className="h-10 border-b border-white/5 bg-white/5 flex items-center px-4 gap-2">
-                  <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                  <div className="w-3 h-3 rounded-full bg-amber-400"></div>
-                  <div className="w-3 h-3 rounded-full bg-emerald-400"></div>
-                  <div className="ml-4 w-48 h-4 rounded bg-white/10"></div>
+                  <div className="w-2 h-2 md:w-3 md:h-3 rounded-full bg-red-400"></div>
+                  <div className="w-2 h-2 md:w-3 md:h-3 rounded-full bg-amber-400"></div>
+                  <div className="w-2 h-2 md:w-3 md:h-3 rounded-full bg-emerald-400"></div>
+                  <div className="ml-4 w-32 md:w-48 h-3 md:h-4 rounded bg-white/10"></div>
                </div>
                <div className="p-4 flex gap-4">
                  <div className="w-1/4 space-y-2">
@@ -106,8 +106,8 @@ export default function Home() {
                </div>
             </div>
 
-            {/* AI Chat Popup Floating over dashboard */}
-            <div className="absolute -bottom-10 left-10 w-[240px] glow-card bg-[#0b0a1a] border-[#00f5ff]/40 shadow-[0_10px_40px_rgba(0,245,255,0.15)] p-4 transform -rotate-2">
+            {/* AI Chat Popup Floating over dashboard - Hidden on tiny mobile */}
+            <div className="absolute -bottom-5 md:-bottom-10 left-5 md:left-10 w-[200px] md:w-[240px] glow-card bg-[#0b0a1a] border-[#00f5ff]/40 shadow-[0_10px_40px_rgba(0,245,255,0.15)] p-3 md:p-4 transform -rotate-2 scale-90 md:scale-100">
                <div className="flex items-center gap-2 mb-4">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#00f5ff] to-blue-500 flex items-center justify-center shadow-[0_0_10px_rgba(0,245,255,0.4)]">
                      <Bot className="w-4 h-4 text-white" />
